@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">"Forget Me Not "</string>
+    <string name="categories">Categories</string>
+    <string name="travel">Travel</string>
+    <string name="work">Work</string>
 </resources>
