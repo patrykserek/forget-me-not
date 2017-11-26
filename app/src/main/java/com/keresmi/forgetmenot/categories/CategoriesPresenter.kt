@@ -21,7 +21,7 @@ class CategoriesPresenter : CategoriesContract.Presenter {
         view?.showCategories(mockCategories())
     }
 
-    private fun mockCategories(): List<CategoryVM> = listOf(CategoryVM("Travel", "travel_category"),
-            CategoryVM("Work", "work_category"),
-            CategoryVM("Daily", "daily_category"))
+    private fun mockCategories(): List<CategoryVM> = listOf(CategoryVM("Daily", "coffee"),
+            CategoryVM("Work", "blazer"),
+            CategoryVM("Study", "student"))
 }
