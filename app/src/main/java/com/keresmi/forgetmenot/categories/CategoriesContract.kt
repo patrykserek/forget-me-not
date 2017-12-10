@@ -1,5 +1,7 @@
 package com.keresmi.forgetmenot.categories
 
+import com.keresmi.forgetmenot.db.dao.CategoryDao
+
 
 /**
  * Created by keresmi.
@@ -14,6 +16,8 @@ interface CategoriesContract {
     interface Presenter {
         fun attachView(view: View)
         fun detachView()
+        fun init(categoryDao: CategoryDao, listener: () -> Unit)
         fun getCategories()
+        fun addCategory(categoryVM: CategoryVM)
     }
 }

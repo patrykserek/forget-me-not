@@ -11,15 +11,16 @@ import android.arch.persistence.room.Relation
  */
 
 @Entity(tableName = "Categories")
-data class Category(@PrimaryKey(autoGenerate = true) val id: Long, val name: String, val imageRes: Int)
+data class Category(@PrimaryKey var name: String = "", var imageRes: Int = 0)
 
 @Entity(tableName = "Items")
-data class Item(@PrimaryKey(autoGenerate = true) val id: Long, val name: String, val imageRes: Int)
+data class Item(@PrimaryKey var name: String = "", var imageRes: Int = 0)
 
 @Entity(tableName = "Categories_items")
-data class CategoryItem(@PrimaryKey(autoGenerate = true) val id: Long, val categoryId: Long, val itemId: Long)
+data class CategoryItem(var categoryName: String = "", var itemName: String = "",
+                        @PrimaryKey(autoGenerate = true) var id: Long = 0L)
 
-data class CategoryWithItems(@Embedded val category: Category,
-                             @Relation(parentColumn = "id", entityColumn = "categoryId",
-                                     entity = CategoryItem::class, projection = arrayOf("itemId"))
-                             val itemIdList: List<Long>)
+data class CategoryWithItems(@Embedded var category: Category,
+                             @Relation(parentColumn = "name", entityColumn = "categoryName",
+                                     entity = CategoryItem::class, projection = arrayOf("itemName"))
+                             var itemNameList: List<String>)

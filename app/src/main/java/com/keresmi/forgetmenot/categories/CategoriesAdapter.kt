@@ -1,6 +1,5 @@
 package com.keresmi.forgetmenot.categories
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,7 @@ import kotlinx.android.synthetic.main.item_category.view.*
  * Created by keresmi.
  * https://github.com/keresmi
  */
-class CategoriesAdapter(private val categories: List<CategoryVM>, private val context: Context,
-                        private val listener: (CategoryVM) -> Unit) :
+class CategoriesAdapter(private val categories: List<CategoryVM>, private val listener: (CategoryVM) -> Unit) :
         RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -27,13 +25,10 @@ class CategoriesAdapter(private val categories: List<CategoryVM>, private val co
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(categoryVm: CategoryVM, listener: (CategoryVM) -> Unit) {
+            if (categoryVm.name.isEmpty()) itemView.category_name_background.visibility = View.GONE
+            else itemView.category_name.text = categoryVm.name
             itemView.setOnClickListener { listener(categoryVm) }
-            itemView.category_name.text = categoryVm.name
-            val resId = getImageResByName(categoryVm.imageName)
-            if (resId != 0) itemView.category_image.setImageResource(resId)
+            itemView.category_image.setImageResource(categoryVm.imageRes)
         }
-
-        private fun getImageResByName(resName: String): Int =
-                context.resources.getIdentifier(resName, "drawable", context.packageName)
     }
 }

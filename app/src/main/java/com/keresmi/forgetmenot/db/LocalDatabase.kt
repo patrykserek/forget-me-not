@@ -10,7 +10,7 @@ import com.keresmi.forgetmenot.db.dao.CategoryDao
  * Created by keresmi.
  * https://github.com/keresmi
  */
-@Database(entities = arrayOf(Category::class, Item::class, CategoryItem::class), version = 1)
+@Database(entities = arrayOf(Category::class, Item::class, CategoryItem::class), version = 2)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
@@ -27,6 +27,7 @@ abstract class LocalDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) =
                 Room.databaseBuilder(context.applicationContext,
                         LocalDatabase::class.java, "forget-me-not.db")
+                        .fallbackToDestructiveMigration()
                         .build()
     }
 }
