@@ -3,4 +3,9 @@
     <string name="categories">Categories</string>
     <string name="travel">Travel</string>
     <string name="work">Work</string>
+    <string name="categoty_name">Category name</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="add_category">Add category</string>
+    <string name="empty_category_name">Unable to save category due to empty name.</string>
 </resources>

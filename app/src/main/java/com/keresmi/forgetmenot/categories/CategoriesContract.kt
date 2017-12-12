@@ -10,7 +10,8 @@ import com.keresmi.forgetmenot.db.dao.CategoryDao
 interface CategoriesContract {
 
     interface View {
-        fun showCategories(categories: List<CategoryVM>)
+        fun showCategories(categories: MutableList<CategoryVM>)
+        fun updateCategory(categoryVM: CategoryVM)
     }
 
     interface Presenter {
@@ -18,6 +19,7 @@ interface CategoriesContract {
         fun detachView()
         fun init(categoryDao: CategoryDao, listener: () -> Unit)
         fun getCategories()
+        fun getCategoryImageResList(): ArrayList<Int>
         fun addCategory(categoryVM: CategoryVM)
     }
 }

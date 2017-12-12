@@ -3,7 +3,6 @@ package com.keresmi.forgetmenot.categories
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,13 +33,21 @@ class CategoriesFragment : Fragment(), CategoriesContract.View {
         super.onDestroyView()
     }
 
-    override fun showCategories(categories: List<CategoryVM>) {
+    override fun showCategories(categories: MutableList<CategoryVM>) {
         categories_recycler_view.layoutManager = GridLayoutManager(context, 2)
         categories_recycler_view.adapter = CategoriesAdapter(categories,
-                { categoryVM -> openCategory(categoryVM.name) })
+                { categoryVM -> onCategoryClicked(categoryVM.name) })
     }
 
-    private fun openCategory(name: String) {
-        Log.d("CategoriesFragment", "Item $name clicked")
+    override fun updateCategory(categoryVM: CategoryVM) {
+        (categories_recycler_view.adapter as CategoriesAdapter).update(categoryVM)
+    }
+
+    private fun onCategoryClicked(name: String) {
+        if (name.isEmpty()) {
+            val dialog = AddCategoryDialog.newInstance(presenter.getCategoryImageResList())
+            dialog.onSaveButtonClickedListener = { categoryVM -> presenter.addCategory(categoryVM) }
+            dialog.show(activity.fragmentManager, AddCategoryDialog::class.java.simpleName)
+        }
     }
 }

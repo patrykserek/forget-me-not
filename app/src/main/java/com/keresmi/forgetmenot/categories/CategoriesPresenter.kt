@@ -5,6 +5,7 @@ import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.db.Category
 import com.keresmi.forgetmenot.db.dao.CategoryDao
 import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -41,8 +42,22 @@ class CategoriesPresenter : CategoriesContract.Presenter {
                         { error -> Log.e(TAG, "getCategories: Error: " + error.message) })
     }
 
-    override fun addCategory(categoryVM: CategoryVM) {
+    override fun getCategoryImageResList(): ArrayList<Int> = arrayListOf(R.drawable.blazer,
+            R.drawable.business, R.drawable.cable_car, R.drawable.christmas, R.drawable.coffee,
+            R.drawable.easter, R.drawable.luggage, R.drawable.office, R.drawable.ship,
+            R.drawable.shopping, R.drawable.sport, R.drawable.student, R.drawable.swimmers,
+            R.drawable.touring, R.drawable.traffic, R.drawable.trolley)
 
+    override fun addCategory(categoryVM: CategoryVM) {
+        Single.fromCallable { categoryDao?.insert(Category(categoryVM.name, categoryVM.imageRes)) }
+                .flatMap {
+                    categoryDao?.getCategoryByName(categoryVM.name)
+                            ?.map { category -> CategoryVM(category) }
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ view?.updateCategory(it) },
+                        { error -> Log.e(TAG, "Init categories error: " + error.message) })
     }
 
     private fun savePredefinedCategories(listener: () -> Unit) {
@@ -58,9 +73,8 @@ class CategoriesPresenter : CategoriesContract.Presenter {
 
     private fun getAddButton() = CategoryVM("", R.drawable.ic_add_white_48px)
 
-    private fun convert(categoryList: List<Category>): List<CategoryVM> =
+    private fun convert(categoryList: List<Category>): MutableList<CategoryVM> =
             categoryList.map(::CategoryVM)
                     .toMutableList()
                     .apply { add(getAddButton()) }
-                    .toList()
 }
