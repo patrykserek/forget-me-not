@@ -12,6 +12,7 @@
         tools:src="@drawable/coffee" />
 
     <View
+        android:id="@+id/category_name_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/category_name"

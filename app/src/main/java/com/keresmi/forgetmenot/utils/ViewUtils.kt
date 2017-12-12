@@ -1,4 +1,4 @@
-package com.keresmi.forgetmenot
+package com.keresmi.forgetmenot.utils
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,6 @@ import android.view.ViewGroup
  */
 object ViewUtils {
 
-    fun ViewGroup.inflate(layoutRes: Int): View {
-        return LayoutInflater.from(context).inflate(layoutRes, this, false)
-    }
+    fun ViewGroup.inflate(layoutRes: Int): View =
+            LayoutInflater.from(context).inflate(layoutRes, this, false)
 }

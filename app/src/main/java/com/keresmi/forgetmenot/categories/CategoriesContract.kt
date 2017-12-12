@@ -1,5 +1,7 @@
 package com.keresmi.forgetmenot.categories
 
+import com.keresmi.forgetmenot.db.dao.CategoryDao
+
 
 /**
  * Created by keresmi.
@@ -8,12 +10,16 @@ package com.keresmi.forgetmenot.categories
 interface CategoriesContract {
 
     interface View {
-        fun showCategories(categories: List<CategoryVM>)
+        fun showCategories(categories: MutableList<CategoryVM>)
+        fun updateCategory(categoryVM: CategoryVM)
     }
 
     interface Presenter {
         fun attachView(view: View)
         fun detachView()
+        fun init(categoryDao: CategoryDao, listener: () -> Unit)
         fun getCategories()
+        fun getCategoryImageResList(): ArrayList<Int>
+        fun addCategory(categoryVM: CategoryVM)
     }
 }
