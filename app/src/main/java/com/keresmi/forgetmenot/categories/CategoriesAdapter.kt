@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
-import com.keresmi.forgetmenot.utils.ViewUtils.inflate
+import com.keresmi.forgetmenot.utils.Extensions.inflate
 import kotlinx.android.synthetic.main.item_category.view.*
 
 /**
@@ -16,7 +16,8 @@ class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private
 
     fun update(categoryVm: CategoryVM) {
         categories.add(categories.size - 1, categoryVm)
-        notifyItemRangeChanged(categories.size - 2, categories.size)
+        notifyItemInserted(categories.size - 2)
+        notifyItemChanged(categories.size - 1)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -30,8 +31,13 @@ class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(categoryVm: CategoryVM, listener: (CategoryVM) -> Unit) {
-            if (categoryVm.name.isEmpty()) itemView.category_name_background.visibility = View.GONE
-            else itemView.category_name.text = categoryVm.name
+            if (categoryVm.name.isEmpty()) {
+                itemView.category_name_background.visibility = View.GONE
+                itemView.category_name.text = ""
+            } else {
+                itemView.category_name_background.visibility = View.VISIBLE
+                itemView.category_name.text = categoryVm.name
+            }
             itemView.setOnClickListener { listener(categoryVm) }
             itemView.category_image.setImageResource(categoryVm.imageRes)
         }
