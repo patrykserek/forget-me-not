@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.keresmi.forgetmenot.R
+import com.keresmi.forgetmenot.utils.Extensions.toast
 import kotlinx.android.synthetic.main.fragment_dialog_add_category.*
 
 /**
@@ -44,8 +44,7 @@ class AddCategoryDialog : DialogFragment() {
                     it(CategoryVM(getCategoryName(), getCategoryImageRes()))
                     dismiss()
                 } else {
-                    Toast.makeText(activity, getString(R.string.empty_category_name), Toast.LENGTH_SHORT)
-                            .show()
+                    getString(R.string.empty_category_name).toast(activity)
                 }
             }
         }

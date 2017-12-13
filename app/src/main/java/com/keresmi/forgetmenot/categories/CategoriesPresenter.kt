@@ -57,7 +57,10 @@ class CategoriesPresenter : CategoriesContract.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ view?.updateCategory(it) },
-                        { error -> Log.e(TAG, "Init categories error: " + error.message) })
+                        { error ->
+                            Log.e(TAG, "Init categories error: " + error.message)
+                            view?.showMessage("Category already exists")
+                        })
     }
 
     private fun savePredefinedCategories(listener: () -> Unit) {

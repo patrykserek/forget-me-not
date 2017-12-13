@@ -12,6 +12,7 @@ interface CategoriesContract {
     interface View {
         fun showCategories(categories: MutableList<CategoryVM>)
         fun updateCategory(categoryVM: CategoryVM)
+        fun showMessage(message: String)
     }
 
     interface Presenter {

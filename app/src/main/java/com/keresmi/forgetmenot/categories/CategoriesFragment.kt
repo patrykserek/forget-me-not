@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.db.LocalDatabase
+import com.keresmi.forgetmenot.utils.Extensions.toast
 import kotlinx.android.synthetic.main.fragment_categories.*
 
 /**
@@ -41,6 +42,10 @@ class CategoriesFragment : Fragment(), CategoriesContract.View {
 
     override fun updateCategory(categoryVM: CategoryVM) {
         (categories_recycler_view.adapter as CategoriesAdapter).update(categoryVM)
+    }
+
+    override fun showMessage(message: String) {
+        message.toast(context)
     }
 
     private fun onCategoryClicked(name: String) {

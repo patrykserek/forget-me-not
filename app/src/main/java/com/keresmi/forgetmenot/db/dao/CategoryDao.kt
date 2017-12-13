@@ -7,7 +7,6 @@ import android.arch.persistence.room.Query
 import com.keresmi.forgetmenot.db.Category
 import io.reactivex.Single
 
-
 /**
  * Created by keresmi.
  * https://github.com/keresmi
@@ -21,7 +20,7 @@ interface CategoryDao {
     @Query("SELECT * FROM Categories WHERE name LIKE :arg0 LIMIT 1")
     fun getCategoryByName(name: String): Single<Category>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.FAIL)
     fun insert(category: Category)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
