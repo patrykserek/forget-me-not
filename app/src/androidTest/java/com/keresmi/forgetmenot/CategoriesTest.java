@@ -17,7 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.replaceText;
@@ -65,7 +64,6 @@ public class CategoriesTest {
                         isDisplayed()));
         appCompatEditText2.perform(replaceText("party"), closeSoftKeyboard());
 
-        pressBack();
 
         ViewInteraction appCompatButton = onView(
                 allOf(withId(R.id.fragment_dialog_button_save), withText("Save"),
@@ -104,7 +102,6 @@ public class CategoriesTest {
                         isDisplayed()));
         appCompatEditText4.perform(replaceText("dinner"), closeSoftKeyboard());
 
-        pressBack();
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.fragment_dialog_button_save), withText("Save"),
@@ -143,7 +140,6 @@ public class CategoriesTest {
                         isDisplayed()));
         appCompatEditText6.perform(replaceText("party"), closeSoftKeyboard());
 
-        pressBack();
 
         ViewInteraction appCompatButton3 = onView(
                 allOf(withId(R.id.fragment_dialog_button_save), withText("Save"),
