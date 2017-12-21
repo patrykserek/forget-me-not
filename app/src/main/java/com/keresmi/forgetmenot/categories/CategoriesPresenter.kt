@@ -34,7 +34,7 @@ class CategoriesPresenter : CategoriesContract.Presenter {
     }
 
     override fun getCategories() {
-        categoryDao?.getAllCategories()
+        categoryDao?.getAll()
                 ?.map(this::convert)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
@@ -51,7 +51,7 @@ class CategoriesPresenter : CategoriesContract.Presenter {
     override fun addCategory(categoryVM: CategoryVM) {
         Single.fromCallable { categoryDao?.insert(Category(categoryVM.name, categoryVM.imageRes)) }
                 .flatMap {
-                    categoryDao?.getCategoryByName(categoryVM.name)
+                    categoryDao?.getByName(categoryVM.name)
                             ?.map { category -> CategoryVM(category) }
                 }
                 .subscribeOn(Schedulers.io())
