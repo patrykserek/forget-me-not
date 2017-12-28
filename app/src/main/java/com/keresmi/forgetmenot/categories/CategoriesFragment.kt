@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.db.LocalDatabase
+import com.keresmi.forgetmenot.items.ItemsActivity
 import com.keresmi.forgetmenot.utils.Extensions.toast
 import kotlinx.android.synthetic.main.fragment_categories.*
 
@@ -53,6 +54,8 @@ class CategoriesFragment : Fragment(), CategoriesContract.View {
             val dialog = AddCategoryDialog.newInstance(presenter.getCategoryImageResList())
             dialog.onSaveButtonClickedListener = { categoryVM -> presenter.addCategory(categoryVM) }
             dialog.show(activity.fragmentManager, AddCategoryDialog::class.java.simpleName)
+        } else {
+            startActivity(ItemsActivity.newIntent(context, name))
         }
     }
 }

@@ -5,6 +5,8 @@ import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
 import com.keresmi.forgetmenot.db.dao.CategoryDao
+import com.keresmi.forgetmenot.db.dao.CategoryItemDao
+import com.keresmi.forgetmenot.db.dao.ItemDao
 
 /**
  * Created by keresmi.
@@ -14,6 +16,8 @@ import com.keresmi.forgetmenot.db.dao.CategoryDao
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
+    abstract fun itemDao(): ItemDao
+    abstract fun categoryItemDao(): CategoryItemDao
 
     companion object {
 

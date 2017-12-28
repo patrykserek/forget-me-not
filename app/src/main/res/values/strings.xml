@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">"Forget Me Not "</string>
     <string name="categories">Categories</string>
+    <string name="items">Items</string>
+    <string name="alarm">Alarm</string>
     <string name="travel">Travel</string>
     <string name="work">Work</string>
     <string name="categoty_name">Category name</string>
