@@ -81,7 +81,8 @@ class ItemsPresenter : ItemsContract.Presenter {
             R.drawable.ic_speaker_white_48px, R.drawable.ic_stay_current_portrait_white_48px,
             R.drawable.ic_tablet_android_white_48px, R.drawable.ic_vpn_key_white_48px,
             R.drawable.ic_watch_white_48px, R.drawable.ic_wc_white_48px,
-            R.drawable.ic_weekend_white_48px, R.drawable.ic_work_white_48px)
+            R.drawable.ic_weekend_white_48px, R.drawable.ic_work_white_48px,
+            R.drawable.ic_school_white_48px)
 
     override fun addItem(itemVM: ItemVM, categoryName: String) {
         insertItem(itemVM, categoryName)
