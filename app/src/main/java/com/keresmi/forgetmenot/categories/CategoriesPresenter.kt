@@ -59,7 +59,18 @@ class CategoriesPresenter : CategoriesContract.Presenter {
                 .subscribe({ view?.updateCategory(it) },
                         { error ->
                             Log.e(TAG, "Add category error: " + error.message)
-                            view?.showMessage("Category already exists")
+                            view?.showMessage(R.string.category_exists)
+                        })
+    }
+
+    override fun deleteCategory(categoryVM: CategoryVM) {
+        Single.fromCallable { categoryDao?.delete(Category(categoryVM.name, categoryVM.imageRes)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ view?.removeCategory(categoryVM) },
+                        { error ->
+                            Log.e(TAG, "Delete category error: " + error.message)
+                            view?.showMessage(R.string.deleting_category_failed)
                         })
     }
 

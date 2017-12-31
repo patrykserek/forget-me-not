@@ -10,4 +10,9 @@
     <string name="save">Save</string>
     <string name="add_category">Add category</string>
     <string name="empty_category_name">Unable to save category due to empty name.</string>
+    <string name="delete_category_alert">Are you sure you want to delete this category?</string>
+    <string name="delete_category_title">Delete category</string>
+    <string name="category_exists">Category already exists.</string>
+    <string name="deleting_category_failed">Deleting category failed.</string>
+    <string name="delete">Delete</string>
 </resources>
