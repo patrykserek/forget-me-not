@@ -61,8 +61,11 @@ class ItemsActivity : AppCompatActivity(), ItemsContract.View {
     private fun getCategoryNameFromArgs() = intent.getStringExtra(CATEGORY_NAME)
 
     private fun onAddButtonClicked() {
-        showMessage("Feature not implemented yet")
-        //show dialog to add new item here
+        val dialog = AddItemDialog.newInstance(presenter.getItemImageResList())
+     //   dialog.onSaveButtonClickedListener = { itemVM -> presenter.addItem(itemVM)}
+        val fm = this@ItemsActivity.fragmentManager
+        dialog.show(fm,"item_dialog")
+
     }
 
     private fun initListeners() {
