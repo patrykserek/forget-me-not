@@ -62,7 +62,7 @@ class ItemsActivity : AppCompatActivity(), ItemsContract.View {
 
     private fun onAddButtonClicked() {
         val dialog = AddItemDialog.newInstance(presenter.getItemImageResList())
-     //   dialog.onSaveButtonClickedListener = { itemVM -> presenter.addItem(itemVM)}
+        dialog.onSaveButtonClickedListener = { itemVM -> presenter.addItem(itemVM,getCategoryNameFromArgs())}
         val fm = this@ItemsActivity.fragmentManager
         dialog.show(fm,"item_dialog")
 
