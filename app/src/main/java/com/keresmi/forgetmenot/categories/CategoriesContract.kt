@@ -12,7 +12,8 @@ interface CategoriesContract {
     interface View {
         fun showCategories(categories: MutableList<CategoryVM>)
         fun updateCategory(categoryVM: CategoryVM)
-        fun showMessage(message: String)
+        fun removeCategory(categoryVM: CategoryVM)
+        fun showMessage(messageRes: Int)
     }
 
     interface Presenter {
@@ -22,5 +23,6 @@ interface CategoriesContract {
         fun getCategories()
         fun getCategoryImageResList(): ArrayList<Int>
         fun addCategory(categoryVM: CategoryVM)
+        fun deleteCategory(categoryVM: CategoryVM)
     }
 }

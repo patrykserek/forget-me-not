@@ -1,9 +1,6 @@
 package com.keresmi.forgetmenot.db.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.keresmi.forgetmenot.db.Category
 import io.reactivex.Single
 
@@ -15,14 +12,17 @@ import io.reactivex.Single
 interface CategoryDao {
 
     @Query("SELECT * FROM Categories")
-    fun getAllCategories(): Single<List<Category>>
+    fun getAll(): Single<List<Category>>
 
     @Query("SELECT * FROM Categories WHERE name LIKE :arg0 LIMIT 1")
-    fun getCategoryByName(name: String): Single<Category>
+    fun getByName(name: String): Single<Category>
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
     fun insert(category: Category)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertAll(categories: List<Category>)
+
+    @Delete
+    fun delete(category: Category)
 }

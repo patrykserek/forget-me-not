@@ -11,13 +11,19 @@ import kotlinx.android.synthetic.main.item_category.view.*
  * Created by keresmi.
  * https://github.com/keresmi
  */
-class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private val listener: (CategoryVM) -> Unit) :
+class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private val listener: CategoryClickListener) :
         RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>() {
 
     fun update(categoryVm: CategoryVM) {
         categories.add(categories.size - 1, categoryVm)
         notifyItemInserted(categories.size - 2)
         notifyItemChanged(categories.size - 1)
+    }
+
+    fun remove(categoryVm: CategoryVM) {
+        val index = categories.indexOf(categoryVm)
+        categories.removeAt(index)
+        notifyItemRemoved(index)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -30,7 +36,7 @@ class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private
     override fun getItemCount(): Int = categories.size
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(categoryVm: CategoryVM, listener: (CategoryVM) -> Unit) {
+        fun bind(categoryVm: CategoryVM, listener: CategoryClickListener) {
             if (categoryVm.name.isEmpty()) {
                 itemView.category_name_background.visibility = View.GONE
                 itemView.category_name.text = ""
@@ -38,7 +44,8 @@ class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private
                 itemView.category_name_background.visibility = View.VISIBLE
                 itemView.category_name.text = categoryVm.name
             }
-            itemView.setOnClickListener { listener(categoryVm) }
+            itemView.setOnClickListener { listener.onClick(categoryVm) }
+            itemView.setOnLongClickListener { listener.onLongClick(categoryVm); false }
             itemView.category_image.setImageResource(categoryVm.imageRes)
         }
     }

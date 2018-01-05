@@ -34,7 +34,7 @@ class CategoriesPresenter : CategoriesContract.Presenter {
     }
 
     override fun getCategories() {
-        categoryDao?.getAllCategories()
+        categoryDao?.getAll()
                 ?.map(this::convert)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
@@ -51,15 +51,26 @@ class CategoriesPresenter : CategoriesContract.Presenter {
     override fun addCategory(categoryVM: CategoryVM) {
         Single.fromCallable { categoryDao?.insert(Category(categoryVM.name, categoryVM.imageRes)) }
                 .flatMap {
-                    categoryDao?.getCategoryByName(categoryVM.name)
+                    categoryDao?.getByName(categoryVM.name)
                             ?.map { category -> CategoryVM(category) }
                 }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ view?.updateCategory(it) },
                         { error ->
-                            Log.e(TAG, "Init categories error: " + error.message)
-                            view?.showMessage("Category already exists")
+                            Log.e(TAG, "Add category error: " + error.message)
+                            view?.showMessage(R.string.category_exists)
+                        })
+    }
+
+    override fun deleteCategory(categoryVM: CategoryVM) {
+        Single.fromCallable { categoryDao?.delete(Category(categoryVM.name, categoryVM.imageRes)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ view?.removeCategory(categoryVM) },
+                        { error ->
+                            Log.e(TAG, "Delete category error: " + error.message)
+                            view?.showMessage(R.string.deleting_category_failed)
                         })
     }
 
