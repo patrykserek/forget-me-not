@@ -3,6 +3,7 @@ package com.keresmi.forgetmenot.categories
 import android.app.AlertDialog
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -79,12 +80,19 @@ class CategoriesFragment : Fragment(), CategoriesContract.View, CategoryClickLis
     }
 
     private fun showAlertDialog(categoryVM: CategoryVM) {
-        AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context)
                 .setTitle(getString(R.string.delete_category_title))
                 .setMessage(getString(R.string.delete_category_alert))
                 .setPositiveButton(R.string.delete, { _, _ -> presenter.deleteCategory(categoryVM) })
                 .setNegativeButton(R.string.cancel, { dialog, _ -> dialog.dismiss() })
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .show()
+                .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context, R.color.text))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.text))
+        }
+
+        dialog.show()
     }
 }
