@@ -10,7 +10,7 @@ import com.keresmi.forgetmenot.utils.Extensions.toast
 import kotlinx.android.synthetic.main.fragment_dialog_add_item.*
 
 
-class AddItemDialog : DialogFragment(){
+class AddItemDialog : DialogFragment() {
 
     var onSaveButtonClickedListener: ((ItemVM) -> Unit)? = null
 
@@ -25,7 +25,7 @@ class AddItemDialog : DialogFragment(){
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater?.inflate(R.layout.fragment_dialog_add_item, container, false)
+            inflater?.inflate(R.layout.fragment_dialog_add_item, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,12 +33,12 @@ class AddItemDialog : DialogFragment(){
         initListeners()
     }
 
-    private fun initListeners(){
+    private fun initListeners() {
         item_fragment_dialog_button_cancel.setOnClickListener { dismiss() }
         onSaveButtonClickedListener?.let {
             item_fragment_dialog_button_save.setOnClickListener {
-                if (isItemValid()){
-                    it(ItemVM(getItemName(),getItemImageRes()))
+                if (isItemValid()) {
+                    it(ItemVM(getItemName(), getItemImageRes()))
                     dismiss()
                 } else {
                     getString(R.string.empty_item_name).toast(activity)
@@ -58,7 +58,7 @@ class AddItemDialog : DialogFragment(){
 
     private fun getItemsImageResFromArgs() = arguments.getIntegerArrayList(ITEMS_IMAGES)
 
-    private fun getItemName() = fragment_dialog_item_name.text.toString().trim()
+    private fun getItemName() = fragment_dialog_item_name.text.toString().trim().toLowerCase()
 
     private fun getItemImageRes(): Int {
         val position = item_fragment_dialog_pager_container.viewPager!!.currentItem

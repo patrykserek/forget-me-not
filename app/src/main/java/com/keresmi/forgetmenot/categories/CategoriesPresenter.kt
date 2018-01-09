@@ -82,8 +82,8 @@ class CategoriesPresenter : CategoriesContract.Presenter {
                         { error -> Log.e(TAG, "Init categories error: " + error.message) })
     }
 
-    private fun getPredefinedCategories(): List<Category> = listOf(Category("Daily", R.drawable.coffee),
-            Category("Work", R.drawable.blazer), Category("Study", R.drawable.student))
+    private fun getPredefinedCategories(): List<Category> = listOf(Category("daily", R.drawable.coffee),
+            Category("work", R.drawable.blazer), Category("study", R.drawable.student))
 
     private fun getAddButton() = CategoryVM("", R.drawable.ic_add_white_48px)
 
