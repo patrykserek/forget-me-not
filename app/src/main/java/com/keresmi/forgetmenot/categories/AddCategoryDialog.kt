@@ -61,7 +61,7 @@ class AddCategoryDialog : DialogFragment() {
 
     private fun getCategoriesImageResFromArgs() = arguments.getIntegerArrayList(CATEGORIES_IMAGES)
 
-    private fun getCategoryName() = fragment_dialog_category_name.text.toString().trim()
+    private fun getCategoryName() = fragment_dialog_category_name.text.toString().trim().toLowerCase()
 
     private fun getCategoryImageRes(): Int {
         val position = fragment_dialog_pager_container.viewPager!!.currentItem
