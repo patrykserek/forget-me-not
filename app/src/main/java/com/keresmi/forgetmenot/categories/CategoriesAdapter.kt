@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
+import com.keresmi.forgetmenot.utils.ClickListener
 import com.keresmi.forgetmenot.utils.Extensions.inflate
 import kotlinx.android.synthetic.main.item_category.view.*
 
@@ -11,7 +12,7 @@ import kotlinx.android.synthetic.main.item_category.view.*
  * Created by keresmi.
  * https://github.com/keresmi
  */
-class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private val listener: CategoryClickListener) :
+class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private val listener: ClickListener<CategoryVM>) :
         RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>() {
 
     fun update(categoryVm: CategoryVM) {
@@ -36,7 +37,7 @@ class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private
     override fun getItemCount(): Int = categories.size
 
     inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(categoryVm: CategoryVM, listener: CategoryClickListener) {
+        fun bind(categoryVm: CategoryVM, listener: ClickListener<CategoryVM>) {
             if (categoryVm.name.isEmpty()) {
                 itemView.category_name_background.visibility = View.GONE
                 itemView.category_name.text = ""

@@ -21,7 +21,7 @@ interface ItemDao {
     @Query("SELECT * FROM Items WHERE name LIKE :arg0 LIMIT 1")
     fun getByName(name: String): Single<Item>
 
-    @Insert(onConflict = OnConflictStrategy.FAIL)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(item: Item)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

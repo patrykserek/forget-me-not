@@ -18,4 +18,9 @@
     <string name="category_exists">Category already exists.</string>
     <string name="deleting_category_failed">Deleting category failed.</string>
     <string name="delete">Delete</string>
+    <string name="item_exists">Item already exists</string>
+    <string name="deleting_item_failed">Deleting item failed.</string>
+    <string name="feature_not_implemented">Feature not implemented yet</string>
+    <string name="delete_item_alert">Are you sure you want to delete this item?</string>
+    <string name="delete_item_title">Delete item</string>
 </resources>
