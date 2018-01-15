@@ -13,7 +13,8 @@ interface ItemsContract {
     interface View {
         fun showItems(items: MutableList<ItemVM>)
         fun updateItem(item: ItemVM)
-        fun showMessage(message: String)
+        fun removeItem(item: ItemVM)
+        fun showMessage(messageRes: Int)
     }
 
     interface Presenter {
@@ -23,5 +24,6 @@ interface ItemsContract {
         fun getItems(categoryName: String)
         fun getItemImageResList(): ArrayList<Int>
         fun addItem(itemVM: ItemVM, categoryName: String)
+        fun deleteItem(itemVM: ItemVM, categoryName: String)
     }
 }

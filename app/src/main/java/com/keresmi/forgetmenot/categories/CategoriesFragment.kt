@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.db.LocalDatabase
 import com.keresmi.forgetmenot.items.ItemsActivity
+import com.keresmi.forgetmenot.utils.ClickListener
 import com.keresmi.forgetmenot.utils.Extensions.toast
 import kotlinx.android.synthetic.main.fragment_categories.*
 
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_categories.*
  * Created by keresmi.
  * https://github.com/keresmi
  */
-class CategoriesFragment : Fragment(), CategoriesContract.View, CategoryClickListener {
+class CategoriesFragment : Fragment(), CategoriesContract.View, ClickListener<CategoryVM> {
 
     private val presenter: CategoriesContract.Presenter = CategoriesPresenter()
 
@@ -55,12 +56,12 @@ class CategoriesFragment : Fragment(), CategoriesContract.View, CategoryClickLis
         getString(messageRes).toast(context)
     }
 
-    override fun onClick(categoryVM: CategoryVM) {
-        onCategoryClick(categoryVM.name)
+    override fun onClick(item: CategoryVM) {
+        onCategoryClick(item.name)
     }
 
-    override fun onLongClick(categoryVM: CategoryVM) {
-        onCategoryLongClick(categoryVM)
+    override fun onLongClick(item: CategoryVM) {
+        onCategoryLongClick(item)
     }
 
     private fun onCategoryClick(name: String) {

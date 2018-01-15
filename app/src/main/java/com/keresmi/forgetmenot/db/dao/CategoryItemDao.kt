@@ -1,9 +1,6 @@
 package com.keresmi.forgetmenot.db.dao
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.keresmi.forgetmenot.db.CategoryItem
 import com.keresmi.forgetmenot.db.Item
 import io.reactivex.Single
@@ -26,4 +23,7 @@ interface CategoryItemDao {
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
     fun insert(categoryItem: CategoryItem)
+
+    @Delete
+    fun delete(categoryItem: CategoryItem)
 }

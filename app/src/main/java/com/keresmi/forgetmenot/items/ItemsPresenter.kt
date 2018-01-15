@@ -95,12 +95,27 @@ class ItemsPresenter : ItemsContract.Presenter {
                 .subscribe({ view?.updateItem(it) },
                         { error ->
                             Log.e(TAG, "Add item error: " + error.message)
-                            view?.showMessage("Item already exists")
+                            view?.showMessage(R.string.item_exists)
+                        })
+    }
+
+    override fun deleteItem(itemVM: ItemVM, categoryName: String) {
+        Single.fromCallable { categoryItemDao?.delete(CategoryItem(categoryName, itemVM.name)) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ view?.removeItem(itemVM) },
+                        { error ->
+                            Log.e(TAG, "Delete item error: " + error.message)
+                            view?.showMessage(R.string.deleting_item_failed)
                         })
     }
 
     private fun insertItemAsSingle(itemVM: ItemVM) =
             Single.fromCallable { itemDao?.insert(Item(itemVM.name, itemVM.imageRes)) }
+                    .onErrorReturn { t ->
+                        Log.e(TAG, "Insert item error: " + t.message)
+                        Unit
+                    }
 
     private fun insertCategoryItemAsSingle(categoryName: String, itemName: String) =
             Single.fromCallable { categoryItemDao?.insert(CategoryItem(categoryName, itemName)) }
