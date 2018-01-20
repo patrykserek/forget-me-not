@@ -39,13 +39,14 @@ class ItemsAdapter constructor(private val items: MutableList<ItemVM>,
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(itemVM: ItemVM, listener: ClickListener<ItemVM>) {
-            itemView.setOnLongClickListener { listener.onLongClick(itemVM); false }
-
             if (itemVM.name.isNotEmpty()) {
                 itemView.item_name.text = itemVM.name
                 itemView.item_image.setImageResource(itemVM.imageRes)
             }
-            if (itemVM.name == "Add item") itemView.setOnClickListener { listener.onClick(itemVM) }
+            if (itemVM.name == "Add item")
+                itemView.setOnClickListener { listener.onClick(itemVM) }
+            else
+                itemView.setOnLongClickListener { listener.onLongClick(itemVM); false }
         }
     }
 }

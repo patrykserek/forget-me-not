@@ -6,6 +6,7 @@ import com.keresmi.forgetmenot.db.CategoryItem
 import com.keresmi.forgetmenot.db.Item
 import com.keresmi.forgetmenot.db.dao.CategoryItemDao
 import com.keresmi.forgetmenot.db.dao.ItemDao
+import com.keresmi.forgetmenot.notification.NotificationJob
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
@@ -40,8 +41,8 @@ class ItemsPresenter : ItemsContract.Presenter {
     }
 
     override fun getItems(categoryName: String) {
-        categoryItemDao?.getItemsByCategoryName(categoryName)
-                ?.map(this::convert)
+        getItemsAsSingle(categoryName)
+                ?.map { items -> items.apply { add(getAddButton()) } }
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(AndroidSchedulers.mainThread())
                 ?.subscribe({ view?.showItems(it) },
@@ -110,6 +111,19 @@ class ItemsPresenter : ItemsContract.Presenter {
                         })
     }
 
+    override fun scheduleNotification(categoryName: String, timeInMillis: Long) {
+        getItemsAsSingle(categoryName)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(AndroidSchedulers.mainThread())
+                ?.subscribe({ scheduleNotification(it, timeInMillis) },
+                        { error -> Log.e(TAG, "getItems: Error: " + error.message) })
+    }
+
+    private fun scheduleNotification(items: MutableList<ItemVM>, timeInMillis: Long) {
+        val message = "Things to take: ${items.map { itemVM -> itemVM.name }.reduce { acc, s -> "$acc, $s" }}."
+        NotificationJob().scheduleNotification(timeInMillis, message)
+    }
+
     private fun insertItemAsSingle(itemVM: ItemVM) =
             Single.fromCallable { itemDao?.insert(Item(itemVM.name, itemVM.imageRes)) }
                     .onErrorReturn { t ->
@@ -129,5 +143,8 @@ class ItemsPresenter : ItemsContract.Presenter {
     private fun convert(categoryList: List<Item>): MutableList<ItemVM> =
             categoryList.map(::ItemVM)
                     .toMutableList()
-                    .apply { add(getAddButton()) }
+
+    private fun getItemsAsSingle(categoryName: String) =
+            categoryItemDao?.getItemsByCategoryName(categoryName)
+                    ?.map(this::convert)
 }

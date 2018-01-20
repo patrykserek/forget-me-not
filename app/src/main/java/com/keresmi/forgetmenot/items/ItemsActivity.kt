@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.db.LocalDatabase
 import com.keresmi.forgetmenot.utils.ClickListener
@@ -77,15 +78,23 @@ class ItemsActivity : AppCompatActivity(), ItemsContract.View, ClickListener<Ite
 
     private fun onAddButtonClicked() {
         val dialog = AddItemDialog.newInstance(presenter.getItemImageResList())
-        dialog.onSaveButtonClickedListener = { itemVM -> presenter.addItem(itemVM,getCategoryNameFromArgs())}
+        dialog.onSaveButtonClickedListener = { itemVM -> presenter.addItem(itemVM, getCategoryNameFromArgs()) }
         val fm = this@ItemsActivity.fragmentManager
-        dialog.show(fm,"item_dialog")
-
+        dialog.show(fm, "item_dialog")
     }
 
     private fun initListeners() {
         items_button_categories.setOnClickListener { onBackPressed(); finish() }
-        items_button_alarm.setOnClickListener { showMessage(R.string.feature_not_implemented) }
+        items_button_alarm.setOnClickListener { showDateTimeDialog() }
+    }
+
+    private fun showDateTimeDialog() {
+        SingleDateAndTimePickerDialog.Builder(this)
+                .title(getString(R.string.reminder))
+                .minutesStep(1)
+                .mainColor(ContextCompat.getColor(this, R.color.text))
+                .listener({ date -> presenter.scheduleNotification(getCategoryNameFromArgs(), date.time) })
+                .display()
     }
 
     private fun onItemLongClick(item: ItemVM) {
