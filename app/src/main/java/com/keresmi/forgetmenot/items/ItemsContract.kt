@@ -25,5 +25,6 @@ interface ItemsContract {
         fun getItemImageResList(): ArrayList<Int>
         fun addItem(itemVM: ItemVM, categoryName: String)
         fun deleteItem(itemVM: ItemVM, categoryName: String)
+        fun scheduleNotification(categoryName: String, timeInMillis: Long)
     }
 }
