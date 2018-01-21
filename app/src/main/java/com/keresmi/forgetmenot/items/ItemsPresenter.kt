@@ -112,16 +112,23 @@ class ItemsPresenter : ItemsContract.Presenter {
     }
 
     override fun scheduleNotification(categoryName: String, timeInMillis: Long) {
-        getItemsAsSingle(categoryName)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ scheduleNotification(it, timeInMillis) },
-                        { error -> Log.e(TAG, "getItems: Error: " + error.message) })
+        if (timeInMillis <= System.currentTimeMillis())
+            view?.showMessage(R.string.invalid_date)
+        else
+            getItemsAsSingle(categoryName)
+                    ?.subscribeOn(Schedulers.io())
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribe({ scheduleNotification(it, timeInMillis) },
+                            { error -> Log.e(TAG, "getItems: Error: " + error.message) })
     }
 
     private fun scheduleNotification(items: MutableList<ItemVM>, timeInMillis: Long) {
-        val message = "Things to take: ${items.map { itemVM -> itemVM.name }.reduce { acc, s -> "$acc, $s" }}."
-        NotificationJob().scheduleNotification(timeInMillis, message)
+        if (items.isNotEmpty()) {
+            val message = "Things to take: ${items.map { itemVM -> itemVM.name }.reduce { acc, s -> "$acc, $s" }}."
+            NotificationJob().scheduleNotification(timeInMillis, message)
+        } else {
+            view?.showMessage(R.string.empty_item_list)
+        }
     }
 
     private fun insertItemAsSingle(itemVM: ItemVM) =

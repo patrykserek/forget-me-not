@@ -24,4 +24,6 @@
     <string name="delete_item_alert">Are you sure you want to delete this item?</string>
     <string name="delete_item_title">Delete item</string>
     <string name="reminder">Reminder</string>
+    <string name="invalid_date">The reminder cannot be set. Invalid date.</string>
+    <string name="empty_item_list">To set an alarm you must have at least one item added.</string>
 </resources>
