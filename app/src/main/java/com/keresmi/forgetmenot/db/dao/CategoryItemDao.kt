@@ -14,11 +14,11 @@ import io.reactivex.Single
 interface CategoryItemDao {
 
     @Query("SELECT * FROM Items INNER JOIN Categories_items ON Items.name=Categories_items.itemName " +
-            "WHERE Categories_items.categoryName=:arg0")
+            "WHERE Categories_items.categoryName=:name")
     fun getItemsByCategoryName(name: String): Single<List<Item>>
 
     @Query("SELECT * FROM Items INNER JOIN Categories_items ON Items.name=Categories_items.itemName " +
-            "WHERE Categories_items.categoryName=:arg0 AND Categories_items.itemName=:arg1")
+            "WHERE Categories_items.categoryName=:categoryName AND Categories_items.itemName=:itemName")
     fun getItemByCategoryAndItemName(categoryName: String, itemName: String): Single<Item>
 
     @Insert(onConflict = OnConflictStrategy.FAIL)

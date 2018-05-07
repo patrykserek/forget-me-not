@@ -14,7 +14,7 @@ interface CategoryDao {
     @Query("SELECT * FROM Categories")
     fun getAll(): Single<List<Category>>
 
-    @Query("SELECT * FROM Categories WHERE name LIKE :arg0 LIMIT 1")
+    @Query("SELECT * FROM Categories WHERE name LIKE :name LIMIT 1")
     fun getByName(name: String): Single<Category>
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
