@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.utils.Extensions.toast
+import com.keresmi.forgetmenot.utils.Extensions.withArgs
 import kotlinx.android.synthetic.main.fragment_dialog_add_item.*
 
 
@@ -16,11 +17,9 @@ class AddItemDialog : DialogFragment() {
 
     companion object {
         const val ITEMS_IMAGES = "ITEMS_IMAGES"
-        fun newInstance(itemsImagesResList: ArrayList<Int>): AddItemDialog =
-                AddItemDialog().apply {
-                    arguments = Bundle().apply {
-                        putIntegerArrayList(ITEMS_IMAGES, itemsImagesResList)
-                    }
+        fun newInstance(itemImageNameList: ArrayList<String>): AddItemDialog =
+                AddItemDialog().withArgs {
+                    putStringArrayList(ITEMS_IMAGES, itemImageNameList)
                 }
     }
 
@@ -38,7 +37,7 @@ class AddItemDialog : DialogFragment() {
         onSaveButtonClickedListener?.let {
             item_fragment_dialog_button_save.setOnClickListener {
                 if (isItemValid()) {
-                    it(ItemVM(getItemName(), getItemImageRes()))
+                    it(ItemVM(getItemName(), getItemImageName()))
                     dismiss()
                 } else {
                     getString(R.string.empty_item_name).toast(activity)
@@ -48,19 +47,19 @@ class AddItemDialog : DialogFragment() {
     }
 
     private fun initViewPager() {
-        item_fragment_dialog_pager_container.viewPager!!.adapter = AddItemAdapter(activity, getItemsImageResFromArgs())
-        item_fragment_dialog_pager_container.viewPager!!.offscreenPageLimit = getItemsImageResFromArgs().size
-        item_fragment_dialog_pager_container.viewPager!!.pageMargin = 15
-        item_fragment_dialog_pager_container.viewPager!!.clipChildren = false
+        item_fragment_dialog_pager_container.viewPager?.adapter = AddItemAdapter(activity, getItemsImageNameFromArgs())
+        item_fragment_dialog_pager_container.viewPager?.offscreenPageLimit = getItemsImageNameFromArgs().size
+        item_fragment_dialog_pager_container.viewPager?.pageMargin = 15
+        item_fragment_dialog_pager_container.viewPager?.clipChildren = false
     }
 
-    private fun isItemValid(): Boolean = !fragment_dialog_item_name.text.isEmpty()
+    private fun isItemValid(): Boolean = fragment_dialog_item_name.text.isNotEmpty()
 
-    private fun getItemsImageResFromArgs() = arguments.getIntegerArrayList(ITEMS_IMAGES)
+    private fun getItemsImageNameFromArgs() = arguments.getStringArrayList(ITEMS_IMAGES)
 
     private fun getItemName() = fragment_dialog_item_name.text.toString().trim().toLowerCase()
 
-    private fun getItemImageRes(): Int {
+    private fun getItemImageName(): String {
         val position = item_fragment_dialog_pager_container.viewPager!!.currentItem
         return (item_fragment_dialog_pager_container.viewPager!!.adapter as AddItemAdapter).getItem(position)
     }

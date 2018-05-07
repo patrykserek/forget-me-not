@@ -22,7 +22,7 @@ interface ItemsContract {
         fun detachView()
         fun init(itemDao: ItemDao, categoryItemDao: CategoryItemDao)
         fun getItems(categoryName: String)
-        fun getItemImageResList(): ArrayList<Int>
+        fun getItemImageNameList(): ArrayList<String>
         fun addItem(itemVM: ItemVM, categoryName: String)
         fun deleteItem(itemVM: ItemVM, categoryName: String)
         fun scheduleNotification(categoryName: String, timeInMillis: Long)

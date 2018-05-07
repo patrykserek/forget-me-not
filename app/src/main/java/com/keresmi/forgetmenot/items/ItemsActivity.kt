@@ -51,7 +51,7 @@ class ItemsActivity : AppCompatActivity(), ItemsContract.View, ClickListener<Ite
 
     override fun showItems(items: MutableList<ItemVM>) {
         items_recycler_view.layoutManager = GridLayoutManager(this, 3)
-        items_recycler_view.adapter = ItemsAdapter(items, this)
+        items_recycler_view.adapter = ItemsAdapter(this, items, this)
     }
 
     override fun updateItem(item: ItemVM) {
@@ -77,10 +77,9 @@ class ItemsActivity : AppCompatActivity(), ItemsContract.View, ClickListener<Ite
     private fun getCategoryNameFromArgs() = intent.getStringExtra(CATEGORY_NAME)
 
     private fun onAddButtonClicked() {
-        val dialog = AddItemDialog.newInstance(presenter.getItemImageResList())
+        val dialog = AddItemDialog.newInstance(presenter.getItemImageNameList())
         dialog.onSaveButtonClickedListener = { itemVM -> presenter.addItem(itemVM, getCategoryNameFromArgs()) }
-        val fm = this@ItemsActivity.fragmentManager
-        dialog.show(fm, "item_dialog")
+        dialog.show(fragmentManager, "item_dialog")
     }
 
     private fun initListeners() {

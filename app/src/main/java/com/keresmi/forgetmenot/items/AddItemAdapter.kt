@@ -9,11 +9,11 @@ import android.widget.ImageView
 
 
 class AddItemAdapter constructor(private val context: Context,
-                                 private val itemsImagesResList: ArrayList<Int>) : PagerAdapter() {
+                                 private val itemImageNameList: ArrayList<String>) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup?, position: Int): Any {
         val view = ImageView(context)
-        view.setImageResource(itemsImagesResList[position])
+        view.setImageResource(getImageId(itemImageNameList[position]))
         view.scaleType = ImageView.ScaleType.CENTER_CROP
         (container as ViewPager).addView(view)
         return view
@@ -24,7 +24,10 @@ class AddItemAdapter constructor(private val context: Context,
 
     override fun isViewFromObject(view: View?, `object`: Any?): Boolean = view == `object`
 
-    override fun getCount(): Int = itemsImagesResList.size
+    override fun getCount(): Int = itemImageNameList.size
 
-    fun getItem(position: Int) = itemsImagesResList[position]
+    fun getItem(position: Int) = itemImageNameList[position]
+
+    private fun getImageId(imageName: String) = context.resources.getIdentifier(imageName,
+            "drawable", context.packageName)
 }

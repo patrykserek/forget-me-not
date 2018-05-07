@@ -14,7 +14,7 @@ import android.arch.persistence.room.PrimaryKey
 data class Category(@PrimaryKey var name: String = "", var imageName: String = "")
 
 @Entity(tableName = "Items")
-data class Item(@PrimaryKey var name: String = "", var imageRes: Int = 0)
+data class Item(@PrimaryKey var name: String = "", var imageName: String = "")
 
 @Entity(tableName = "Categories_items", primaryKeys = arrayOf("categoryName", "itemName"),
         indices = arrayOf(Index("itemName")), foreignKeys = arrayOf(
