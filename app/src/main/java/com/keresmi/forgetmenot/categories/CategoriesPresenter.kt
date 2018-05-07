@@ -34,22 +34,22 @@ class CategoriesPresenter : CategoriesContract.Presenter {
     }
 
     override fun getCategories() {
-        categoryDao?.getAll()
-                ?.map(this::convert)
-                ?.subscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe({ view?.showCategories(it) },
-                        { error -> Log.e(TAG, "getCategories: Error: " + error.message) })
+        categoryDao?.let {
+            it.getAll()
+                    .map(this::convert)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ view?.showCategories(it) },
+                            { error -> Log.e(TAG, "getCategories: Error: " + error.message) })
+        }
     }
 
-    override fun getCategoryImageResList(): ArrayList<Int> = arrayListOf(R.drawable.blazer,
-            R.drawable.business, R.drawable.cable_car, R.drawable.christmas, R.drawable.coffee,
-            R.drawable.easter, R.drawable.luggage, R.drawable.office, R.drawable.ship,
-            R.drawable.shopping, R.drawable.sport, R.drawable.student, R.drawable.swimmers,
-            R.drawable.touring, R.drawable.traffic, R.drawable.trolley)
+    override fun getCategoryImageNameList(): ArrayList<String> = arrayListOf("blazer", "business",
+            "cable_car", "christmas", "coffee", "easter", "luggage", "office", "ship", "shopping",
+            "sport", "student", "swimmers", "touring", "traffic", "trolley")
 
     override fun addCategory(categoryVM: CategoryVM) {
-        Single.fromCallable { categoryDao?.insert(Category(categoryVM.name, categoryVM.imageRes)) }
+        Single.fromCallable { categoryDao?.insert(Category(categoryVM.name, categoryVM.imageName)) }
                 .flatMap {
                     categoryDao?.getByName(categoryVM.name)
                             ?.map { category -> CategoryVM(category) }
@@ -64,7 +64,7 @@ class CategoriesPresenter : CategoriesContract.Presenter {
     }
 
     override fun deleteCategory(categoryVM: CategoryVM) {
-        Single.fromCallable { categoryDao?.delete(Category(categoryVM.name, categoryVM.imageRes)) }
+        Single.fromCallable { categoryDao?.delete(Category(categoryVM.name, categoryVM.imageName)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ view?.removeCategory(categoryVM) },
@@ -82,10 +82,10 @@ class CategoriesPresenter : CategoriesContract.Presenter {
                         { error -> Log.e(TAG, "Init categories error: " + error.message) })
     }
 
-    private fun getPredefinedCategories(): List<Category> = listOf(Category("daily", R.drawable.coffee),
-            Category("work", R.drawable.blazer), Category("study", R.drawable.student))
+    private fun getPredefinedCategories(): List<Category> = listOf(Category("daily", "coffee"),
+            Category("work", "blazer"), Category("study", "student"))
 
-    private fun getAddButton() = CategoryVM("", R.drawable.ic_add_white_48px)
+    private fun getAddButton() = CategoryVM("", "ic_add_white_48px")
 
     private fun convert(categoryList: List<Category>): MutableList<CategoryVM> =
             categoryList.map(::CategoryVM)

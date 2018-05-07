@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.utils.Extensions.toast
+import com.keresmi.forgetmenot.utils.Extensions.withArgs
 import kotlinx.android.synthetic.main.fragment_dialog_add_category.*
 
 /**
@@ -19,11 +20,9 @@ class AddCategoryDialog : DialogFragment() {
 
     companion object {
         const val CATEGORIES_IMAGES = "CATEGORIES_IMAGES"
-        fun newInstance(categoriesImagesResList: ArrayList<Int>): AddCategoryDialog =
-                AddCategoryDialog().apply {
-                    arguments = Bundle().apply {
-                        putIntegerArrayList(CATEGORIES_IMAGES, categoriesImagesResList)
-                    }
+        fun newInstance(categoryImageNameList: ArrayList<String>): AddCategoryDialog =
+                AddCategoryDialog().withArgs {
+                    putStringArrayList(CATEGORIES_IMAGES, categoryImageNameList)
                 }
     }
 
@@ -41,7 +40,7 @@ class AddCategoryDialog : DialogFragment() {
         onSaveButtonClickedListener?.let {
             fragment_dialog_button_save.setOnClickListener {
                 if (isCategoryValid()) {
-                    it(CategoryVM(getCategoryName(), getCategoryImageRes()))
+                    it(CategoryVM(getCategoryName(), getCategoryImageName()))
                     dismiss()
                 } else {
                     getString(R.string.empty_category_name).toast(activity)
@@ -51,19 +50,19 @@ class AddCategoryDialog : DialogFragment() {
     }
 
     private fun initViewPager() {
-        fragment_dialog_pager_container.viewPager!!.adapter = AddCategoriesAdapter(activity, getCategoriesImageResFromArgs())
-        fragment_dialog_pager_container.viewPager!!.offscreenPageLimit = getCategoriesImageResFromArgs().size
-        fragment_dialog_pager_container.viewPager!!.pageMargin = 15
-        fragment_dialog_pager_container.viewPager!!.clipChildren = false
+        fragment_dialog_pager_container.viewPager?.adapter = AddCategoriesAdapter(activity, getCategoriesImageNameFromArgs())
+        fragment_dialog_pager_container.viewPager?.offscreenPageLimit = getCategoriesImageNameFromArgs().size
+        fragment_dialog_pager_container.viewPager?.pageMargin = 15
+        fragment_dialog_pager_container.viewPager?.clipChildren = false
     }
 
-    private fun isCategoryValid(): Boolean = !fragment_dialog_category_name.text.isEmpty()
+    private fun isCategoryValid(): Boolean = fragment_dialog_category_name.text.isNotEmpty()
 
-    private fun getCategoriesImageResFromArgs() = arguments.getIntegerArrayList(CATEGORIES_IMAGES)
+    private fun getCategoriesImageNameFromArgs() = arguments.getStringArrayList(CATEGORIES_IMAGES)
 
     private fun getCategoryName() = fragment_dialog_category_name.text.toString().trim().toLowerCase()
 
-    private fun getCategoryImageRes(): Int {
+    private fun getCategoryImageName(): String {
         val position = fragment_dialog_pager_container.viewPager!!.currentItem
         return (fragment_dialog_pager_container.viewPager!!.adapter as AddCategoriesAdapter).getItem(position)
     }

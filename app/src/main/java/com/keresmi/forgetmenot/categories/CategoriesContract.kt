@@ -21,7 +21,7 @@ interface CategoriesContract {
         fun detachView()
         fun init(categoryDao: CategoryDao, listener: () -> Unit)
         fun getCategories()
-        fun getCategoryImageResList(): ArrayList<Int>
+        fun getCategoryImageNameList(): ArrayList<String>
         fun addCategory(categoryVM: CategoryVM)
         fun deleteCategory(categoryVM: CategoryVM)
     }

@@ -1,5 +1,6 @@
 package com.keresmi.forgetmenot.categories
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,8 @@ import kotlinx.android.synthetic.main.item_category.view.*
  * Created by keresmi.
  * https://github.com/keresmi
  */
-class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private val listener: ClickListener<CategoryVM>) :
+class CategoriesAdapter(private val context: Context, private val categories: MutableList<CategoryVM>,
+                        private val listener: ClickListener<CategoryVM>) :
         RecyclerView.Adapter<CategoriesAdapter.CategoryViewHolder>() {
 
     fun update(categoryVm: CategoryVM) {
@@ -47,7 +49,10 @@ class CategoriesAdapter(private val categories: MutableList<CategoryVM>, private
             }
             itemView.setOnClickListener { listener.onClick(categoryVm) }
             itemView.setOnLongClickListener { listener.onLongClick(categoryVm); false }
-            itemView.category_image.setImageResource(categoryVm.imageRes)
+            itemView.category_image.setImageResource(getImageId(categoryVm.imageName))
         }
+
+        private fun getImageId(imageName: String) = context.resources.getIdentifier(imageName,
+                "drawable", context.packageName)
     }
 }

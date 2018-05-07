@@ -5,12 +5,11 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
-
 import com.evernote.android.job.Job
 import com.evernote.android.job.JobRequest
 import com.evernote.android.job.util.support.PersistableBundleCompat
-import com.keresmi.forgetmenot.MainActivity
 import com.keresmi.forgetmenot.R
+import com.keresmi.forgetmenot.categories.CategoryActivity
 import java.util.*
 
 
@@ -47,7 +46,7 @@ class NotificationJob : Job() {
 
     private fun createNotification(notificationMessage: String): Notification {
         val pi = PendingIntent.getActivity(context, REQUEST_CODE,
-                Intent(context, MainActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
+                Intent(context, CategoryActivity::class.java), PendingIntent.FLAG_UPDATE_CURRENT)
 
         return NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(context.getString(R.string.app_name))

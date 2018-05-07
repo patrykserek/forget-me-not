@@ -1,6 +1,9 @@
 package com.keresmi.forgetmenot.db
 
-import android.arch.persistence.room.*
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.ForeignKey
+import android.arch.persistence.room.Index
+import android.arch.persistence.room.PrimaryKey
 
 /**
  * Created by keresmi.
@@ -8,7 +11,7 @@ import android.arch.persistence.room.*
  */
 
 @Entity(tableName = "Categories")
-data class Category(@PrimaryKey var name: String = "", var imageRes: Int = 0)
+data class Category(@PrimaryKey var name: String = "", var imageName: String = "")
 
 @Entity(tableName = "Items")
 data class Item(@PrimaryKey var name: String = "", var imageRes: Int = 0)

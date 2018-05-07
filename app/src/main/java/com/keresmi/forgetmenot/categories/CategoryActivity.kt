@@ -1,47 +1,48 @@
 package com.keresmi.forgetmenot.categories
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.keresmi.forgetmenot.R
 import com.keresmi.forgetmenot.db.LocalDatabase
 import com.keresmi.forgetmenot.items.ItemsActivity
 import com.keresmi.forgetmenot.utils.ClickListener
 import com.keresmi.forgetmenot.utils.Extensions.toast
-import kotlinx.android.synthetic.main.fragment_categories.*
+import kotlinx.android.synthetic.main.activity_categories.*
+import kotlinx.android.synthetic.main.content_categories.*
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
-/**
- * Created by keresmi.
- * https://github.com/keresmi
- */
-class CategoriesFragment : Fragment(), CategoriesContract.View, ClickListener<CategoryVM> {
+class CategoryActivity : AppCompatActivity(), CategoriesContract.View, ClickListener<CategoryVM> {
 
     private val presenter: CategoriesContract.Presenter = CategoriesPresenter()
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater?.inflate(R.layout.fragment_categories, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_categories)
+        setSupportActionBar(toolbar)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        activity.setTitle(R.string.categories)
+        title = getString(R.string.categories)
+
         presenter.attachView(this)
-        presenter.init(LocalDatabase.getInstance(context).categoryDao(), { presenter.getCategories() })
+        presenter.init(LocalDatabase.getInstance(this).categoryDao(), { presenter.getCategories() })
     }
 
-    override fun onDestroyView() {
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
+    }
+
+    override fun onDestroy() {
         presenter.detachView()
-        super.onDestroyView()
+        super.onDestroy()
     }
 
     override fun showCategories(categories: MutableList<CategoryVM>) {
-        categories_recycler_view.layoutManager = GridLayoutManager(context, 2)
-        categories_recycler_view.adapter = CategoriesAdapter(categories, this)
+        categories_recycler_view.layoutManager = GridLayoutManager(this, 2)
+        categories_recycler_view.adapter = CategoriesAdapter(this, categories, this)
     }
 
     override fun updateCategory(categoryVM: CategoryVM) {
@@ -53,7 +54,7 @@ class CategoriesFragment : Fragment(), CategoriesContract.View, ClickListener<Ca
     }
 
     override fun showMessage(messageRes: Int) {
-        getString(messageRes).toast(context)
+        getString(messageRes).toast(this)
     }
 
     override fun onClick(item: CategoryVM) {
@@ -66,11 +67,11 @@ class CategoriesFragment : Fragment(), CategoriesContract.View, ClickListener<Ca
 
     private fun onCategoryClick(name: String) {
         if (name.isEmpty()) {
-            val dialog = AddCategoryDialog.newInstance(presenter.getCategoryImageResList())
+            val dialog = AddCategoryDialog.newInstance(presenter.getCategoryImageNameList())
             dialog.onSaveButtonClickedListener = { categoryVM -> presenter.addCategory(categoryVM) }
-            dialog.show(activity.fragmentManager, AddCategoryDialog::class.java.simpleName)
+            dialog.show(fragmentManager, AddCategoryDialog::class.java.simpleName)
         } else {
-            startActivity(ItemsActivity.newIntent(context, name))
+            startActivity(ItemsActivity.newIntent(this, name))
         }
     }
 
@@ -81,7 +82,7 @@ class CategoriesFragment : Fragment(), CategoriesContract.View, ClickListener<Ca
     }
 
     private fun showAlertDialog(categoryVM: CategoryVM) {
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(this)
                 .setTitle(getString(R.string.delete_category_title))
                 .setMessage(getString(R.string.delete_category_alert))
                 .setPositiveButton(R.string.delete, { _, _ -> presenter.deleteCategory(categoryVM) })
@@ -90,8 +91,8 @@ class CategoriesFragment : Fragment(), CategoriesContract.View, ClickListener<Ca
                 .create()
 
         dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(context, R.color.text))
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.text))
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, R.color.text))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, R.color.text))
         }
 
         dialog.show()

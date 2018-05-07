@@ -12,7 +12,7 @@ import com.keresmi.forgetmenot.db.dao.ItemDao
  * Created by keresmi.
  * https://github.com/keresmi
  */
-@Database(entities = arrayOf(Category::class, Item::class, CategoryItem::class), version = 3, exportSchema = false)
+@Database(entities = arrayOf(Category::class, Item::class, CategoryItem::class), version = 4, exportSchema = false)
 abstract class LocalDatabase : RoomDatabase() {
 
     abstract fun categoryDao(): CategoryDao
